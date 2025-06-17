@@ -1,0 +1,19 @@
+# Author: Abhishek Jha
+# Date: 2025-06-17
+# Description: Delete the vars file after the playbook execution
+# Version: 1.0
+---
+- name: Delete a specific file
+  hosts: localhost
+  gather_facts: no
+  vars:
+    file_to_delete: "variables.yaml"  # Specify the full path to the file
+  tasks:
+    - name: Ensure the specified file is deleted
+      file:
+        path: "{{ file_to_delete }}"  # Path of the file to delete
+        state: absent
+
+    - name: Confirm deletion
+      debug:
+        msg: "File {{ file_to_delete }} has been deleted."

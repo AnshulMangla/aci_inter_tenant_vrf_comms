@@ -1,0 +1,34 @@
+# Author: Abhishek Jha
+# Date: 2025-06-17
+# Description: Playbook to convert CSV to YAML
+# Version: 1.0
+---
+- name: Convert CSV to YAML (Preserve Order)
+  hosts: localhost
+  gather_facts: no
+  vars:
+    input_csv: "variables.csv"  # Path to the input CSV file
+    output_yaml: "variables.yaml"  # Path to the output YAML file
+  tasks:
+    - name: Read the CSV file
+      shell: cat {{ input_csv }}
+      register: csv_content
+
+    - name: Parse CSV content into an ordered structure
+      vars:
+        csv_lines: "{{ csv_content.stdout.splitlines() }}"
+        csv_pairs: "{{ csv_lines | map('split', ',') | list }}"
+      set_fact:
+        ordered_list: "{{ csv_pairs | map('join', ': ') | list }}"
+
+    - name: Write the ordered data to a YAML file
+      copy:
+        content: |
+          {% for item in ordered_list %}
+          {{ item }}
+          {% endfor %}
+        dest: "{{ output_yaml }}"
+
+    - name: Display the generated YAML file
+      debug:
+        msg: "YAML file has been created at {{ output_yaml }}"

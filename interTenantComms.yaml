@@ -1,0 +1,10 @@
+# Author: Abhishek Jha
+# Date: 2025-06-17
+# Description: Parent playbook to call the sub-playbooks
+# Version: 1.0
+---
+
+- import_playbook: csv2var.yaml
+- import_playbook: playbook.yaml
+- import_playbook: deletevars.yaml
+

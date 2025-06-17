@@ -1,0 +1,16 @@
+variables,Value
+provider_tn_var,provider_tn
+AppProfile_provider_var,AppProfile_provider
+provider_epg_var,provider_epg
+provider_contract,interTenantContract
+subject,subj
+filter,icmp_fltr
+entry,icmp_allow
+ether_type,ip
+ip_protocol,icmp
+export_contract,export_interTenantContract
+gateway,192.168.22.1
+mask,24
+consumer_tn_var,consumer_tn
+AppProfile_consumer_var,AppProfile_consumer
+consumer_epg_var,consumer_epg

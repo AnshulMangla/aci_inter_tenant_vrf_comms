@@ -1,0 +1,112 @@
+# Author: Abhishek Jha
+# Date: 2025-06-17
+# Description: ACI playbook - Create interTenant Comms
+# Version: 1.0
+---
+- name: Create interTenant Comms
+  hosts: apic
+  connection: local
+  gather_facts: no
+
+  vars:
+    aci_login: &aci_login
+      host: "{{ ansible_host }}"
+      username: "{{ aci_username }}"
+      password: "{{ aci_password }}"
+      validate_certs: "{{ aci_validate_certs }}"
+
+  vars_files:
+    - variables.yaml
+
+  tasks:
+    - name: Create a contract
+      cisco.aci.aci_contract:
+        <<: *aci_login
+        tenant: "{{ provider_tn_var }}"
+        contract: "{{ provider_contract }}"
+        scope: "global"
+        state: present
+      delegate_to: localhost
+
+    - name: Add a contract subject
+      cisco.aci.aci_contract_subject:
+        <<: *aci_login
+        tenant: "{{ provider_tn_var }}"
+        contract: "{{ provider_contract }}"
+        subject: "{{ subject }}"
+        reverse_filter: true
+        state: present
+      delegate_to: localhost
+
+    - name: Add a subject-to-filter binding
+      cisco.aci.aci_contract_subject_to_filter:
+        <<: *aci_login
+        tenant: "{{ provider_tn_var }}"
+        contract: "{{ provider_contract }}"
+        subject: "{{ subject }}"
+        filter: "{{ filter }}"
+        log: log
+        state: present
+      delegate_to: localhost
+
+    - name: Add a filter
+      cisco.aci.aci_filter:
+        <<: *aci_login
+        tenant: "{{ provider_tn_var }}"
+        filter: "{{ filter }}"
+        state: present
+      delegate_to: localhost
+
+    - name: Add a filter entry
+      cisco.aci.aci_filter_entry:
+        <<: *aci_login
+        tenant: "{{ provider_tn_var }}"
+        filter: "{{ filter }}"
+        entry: "{{ entry }}"
+        ether_type: "{{ ether_type }}"
+        ip_protocol: "{{ ip_protocol }}"
+        state: present
+      delegate_to: localhost
+
+    - name: Export Contract
+      cisco.aci.aci_contract_export:
+        <<: *aci_login
+        name: "{{ export_contract }}"
+        destination_tenant: "{{ consumer_tn_var }}"
+        tenant: "{{ provider_tn_var }}"
+        contract: "{{ provider_contract }}"
+        state: present
+      delegate_to: localhost
+
+    - name: Add Contract to Provider EPG
+      cisco.aci.aci_epg_to_contract:
+        <<: *aci_login
+        tenant: "{{ provider_tn_var }}"
+        ap: "{{ AppProfile_provider_var }}"
+        epg: "{{ provider_epg_var }}"
+        contract: "{{ provider_contract }}"
+        contract_type: provider
+        state: present
+      delegate_to: localhost
+
+    - name: Create a subnet to EPG of provider Tenant
+      cisco.aci.aci_epg_subnet:
+        <<: *aci_login
+        tenant: "{{ provider_tn_var }}"
+        ap: "{{ AppProfile_provider_var }}"
+        epg: "{{ provider_epg_var }}"
+        gateway: "{{ gateway }}"
+        mask: "{{ mask }}"
+        scope: shared
+        state: present
+      delegate_to: localhost
+
+    - name: Add Consumed Contract to Consumer EPG
+      cisco.aci.aci_epg_to_contract_interface:
+        <<: *aci_login
+        tenant: "{{ consumer_tn_var }}"
+        ap: "{{ AppProfile_consumer_var}}"
+        epg: "{{ consumer_epg_var }}"
+        contract_interface: "{{ export_contract }}"
+        state: present
+      delegate_to: localhost
