@@ -1,9 +1,9 @@
-# aci_inter_tenant_vrf_comms
-Ansible Playbook to Automate creation of VRFs &amp; associated objects for comms between two Tenants.
+# Cisco ACI Inter VRF/Tenant Route Leaking
 
 ## Summary
 
-This repository contains a set of different examples of ansible playbooks for automating Cisco ACI that were used during the **Automating Cisco ACI using Ansible** webinar delivered in EMEAR.
+This repository contains a set of different examples of ansible playbooks for automating Cisco ACI.
+Ansible Playbook to Automate creation of VRFs &amp; associated objects for communication between VRF/Tenants.
 
 ## Inventory
 
