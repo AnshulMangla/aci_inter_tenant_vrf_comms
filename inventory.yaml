@@ -3,7 +3,7 @@ mlglab:
     apic:
       hosts:
         10.X.X.X:
-          ansible_host: 10.X.x.X
+          ansible_host: 10.X.X.X
           aci_username: user-id # for local user ex. apic#fallback\\user-id
           aci_password: xxxx
           aci_validate_certs: no
