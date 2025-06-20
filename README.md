@@ -5,9 +5,9 @@
 This repository contains a set of different examples of ansible playbooks for automating Cisco ACI.
 Ansible Playbook to Automate creation of VRFs &amp; associated objects for communication between VRF/Tenants.
 
-## Inventory
+## Inventory & variables
 
-Two examples of inventories are provided, both in INI and YAML format. The inventory includes not only APIC but also leaf and spine switches, although those are not used in any of the playbooks provided in this repository.
+Update the variable of inventory.yaml & variables.csv based on your environment with APIC IP and credential.
 
 ## Demos
 
