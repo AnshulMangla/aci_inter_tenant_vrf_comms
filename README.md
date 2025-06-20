@@ -2,12 +2,12 @@
 
 ## Summary
 
-This repository contains a set of different examples of ansible playbooks for automating Cisco ACI.
+This repository contains an ansible playbooks for automating Cisco ACI.
 Ansible Playbook to Automate creation of VRFs &amp; associated objects for communication between VRF/Tenants.
 
-## Inventory & variables
+## Inventory & Variables
 
-Update the variable of inventory.yaml & variables.csv based on your environment with APIC IP and credential.
+Update the variable of inventory.yaml & variables.csv based on your environment with APIC IP, credential and values in csv files.
 
 
 ## Instructions
@@ -26,11 +26,11 @@ Cisco ACI ansible collection can be upgraded using either --force option or --up
 $ ansible-galaxy collection install cisco.aci --force
 ```
 
-Before using these playbooks, ansible inventory needs to modified according to your environment. Demo01 has the password hard-coded in the playbook, it has been removed from the repository.
+Before using these playbooks, ansible inventory and variable.csv needs to modified according to your environment.
 
 To run the playbooks:
 
 ```
-$ ansible-playbook -i inventory.yaml demoXX/demoXX.yaml
+$ ansible-playbook interTenantComms.yaml -i inventory.yaml
 ```
 
